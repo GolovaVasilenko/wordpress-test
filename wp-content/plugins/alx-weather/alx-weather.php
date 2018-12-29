@@ -11,54 +11,25 @@ Author URI: http://lanars.com
 
 define("PLUGIN_PATH", __DIR__);
 
-class ALX_Weather
+include_once PLUGIN_PATH . "/classes/ALX_Weather.php";
+
+add_action( 'wp_enqueue_scripts', 'alx_weather_scripts' );
+add_action('wp_ajax_get_weather_for_widget', 'alx_get_weather_for_widget');
+add_action('wp_ajax_nopriv_get_weather_for_widget', 'alx_get_weather_for_widget');
+
+function alx_weather_scripts()
 {
-    protected $api_key = '&APPID=6d42fe5e407536a60abd6077b2095c55';
+    wp_enqueue_script('alx-weather-script', '/wp-content/plugins/alx-weather/assets/js/scripts.js', array( 'jquery' ), '1.0', true );
+}
 
-    protected $url     = 'http://api.openweathermap.org/data/2.5/weather';
+function alx_get_weather_for_widget()
+{
+    if(empty($_POST))
+        return false;
 
-    /**
-     * @param string $template
-     * @return mixed
-     */
-    public function getMapTemplate($template = 'TA2')
-    {
-        return $this->type_maps[$template];
-    }
+    $post = $_POST;
 
-    /**
-     * @return string
-     */
-    public function getUrl()
-    {
-        return $this->url;
-    }
-
-    /**
-     * @return string
-     */
-    public function getApiKey()
-    {
-        return $this->api_key;
-    }
-
-    public static function test()
-    {
-        return PLUGIN_PATH;
-    }
-
-    public static function getDataApi()
-    {
-        $weather = new self;
-
-        $city = '?q=San Francisco';
-        $country_cod = 'us';
-
-        $url  = $weather->getUrl() . $city . $country_cod . $weather->api_key;
-
-        $content = file_get_contents($url);
-
-        var_dump($content);
-    }
-
+    $apiData = ALX_Weather::getDataApi($post['city'], $post['country']);
+    var_dump($apiData);
+    wp_die();
 }
