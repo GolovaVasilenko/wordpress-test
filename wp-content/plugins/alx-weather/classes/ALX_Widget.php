@@ -2,11 +2,6 @@
 
 //include_once "./ALX_Weather.php";
 
-function alx_register_widget() {
-    register_widget( 'ALX_Widget' );
-}
-
-add_action( 'widgets_init', 'alx_register_widget' );
 
 class ALX_Widget extends WP_Widget
 {
@@ -38,7 +33,7 @@ class ALX_Widget extends WP_Widget
         if (isset($instance['title']))
             $title = $instance['title'];
         else
-            $title = __('Title Widget', 'alx_widget');
+            $title = 'Title Widget';
         ?>
         <p>
             <label for="<?php echo $this->get_field_id( 'title' ); ?>">Заголовок</label>
