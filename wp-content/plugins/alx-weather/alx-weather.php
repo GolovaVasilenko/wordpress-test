@@ -19,7 +19,7 @@ add_action('wp_ajax_nopriv_get_weather_for_widget', 'alx_get_weather_for_widget'
 
 function alx_weather_scripts()
 {
-    wp_enqueue_script('alx-weather-script', '/wp-content/plugins/alx-weather/assets/js/scripts.js', array( 'jquery' ), '1.0', true );
+    wp_enqueue_script('alx-weather-script', plugin_dir_url(__FILE__) . 'assets/js/scripts.js', array( 'jquery' ), time(), true );
 }
 
 function alx_get_weather_for_widget()
@@ -30,6 +30,6 @@ function alx_get_weather_for_widget()
     $post = $_POST;
 
     $apiData = ALX_Weather::getDataApi($post['city'], $post['country']);
-    var_dump($apiData);
+    echo $apiData;
     wp_die();
 }

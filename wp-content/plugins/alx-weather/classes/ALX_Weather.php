@@ -24,6 +24,17 @@ class ALX_Weather
         return self::$api_key;
     }
 
+    public static function getGeoLocation()
+    {
+        $ip = '109.87.189.40';
+        $query = @unserialize(file_get_contents('http://ip-api.com/php/'.$ip.'?lang=ru'));
+        if($query && $query['status'] == 'success') {
+            return $query;
+        } else {
+           return false;
+        }
+    }
+
     /**
      * @param $dataCity
      * @param $dataCountry
@@ -49,24 +60,24 @@ class ALX_Weather
     public static function displayWeather($data)
     {
         $html = '';
+
         /* [°C] = [K] − 273.15 */
-        //$tempCelsium = ceil($data->temp - 273.15, 0);
-        /*var html = '<div class="weather-info-wrapper">';
-        /*<div class="weather-forecast-list__items-today">
-                <div class="weather-forecast-list__item">Sat 29 Dec<img src="//openweathermap.org/img/w/13d.png" alt="forecast">
-                <div class="weather-forecast-list__today-label">Today</div>
-                </div>
-                <td class="weather-forecast-list__item">
-                <p class="weather-forecast-list__card">
-                <span class="weather-forecast-list__day">-1 °C</span>
-            <span class="weather-forecast-list__night">-3.2 °C</span>&nbsp;&nbsp;<i class="weather-forecast-list__naturalPhenomenon">light snow</i>
-            </p>
-            <p class="weather-forecast-list__card">3.51 m/s&nbsp;
-        <br>clouds: 92 %,&nbsp;&nbsp;1018.47 hpa</p>
-            </td>
-            </div>*/
-        /*html += '</div>';*/
-        $html = $data;
+        $tempCelsium = floor($data->main->temp - 273.15);
+        $weather = $data->weather[0];
+        $html .= '<div class="weather-info-wrapper">
+                    <div class="weather-forecast-list__items-today">';
+
+        $html .= '<div class="weather-forecast-list__item"> <img src="https://openweathermap.org/img/w/' . $weather->icon . '.png" alt="forecast" width="50" height="50">
+                <span class="weather-forecast-list__day">temp: ' . $tempCelsium . ' °C</span>
+                <div class="weather-forecast-list__today-label">' . date('M d H:i') . ' <span class="cityName"> ' . $data->name . '</span></div>
+                <div class="weather-forecast_description"> description: ' . $weather->description . '</div>
+                </div>';
+        $html .= '<div class="weather-forecast-list__item">
+           
+       <p class="weather-forecast-list__card">wind: ' . $data->wind->speed . ' m/s&nbsp;
+       </div>';
+        $html .= '</div></div>';
+        //$html = $data;
         return $html;
     }
 
