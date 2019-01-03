@@ -1,7 +1,5 @@
 <?php
 
-//include_once "./ALX_Weather.php";
-
 
 class ALX_Widget extends WP_Widget
 {
@@ -12,16 +10,11 @@ class ALX_Widget extends WP_Widget
 
     public function widget($args, $instance)
     {
-        //parent::widget($args, $instance);
-
         $title = apply_filters('widget_title', $instance['title']);
         echo $args['before_widget'];
 
         if (!empty($title))
             echo $args['before_title'] . $title . $args['after_title'];
-
-        //$location = ALX_Weather::getGeoLocation();
-        //ALX_Weather::getDataApi($location['city'], $location['country'])
 
         echo '<div class="output-weather"></div>';
         echo $args['after_widget'];

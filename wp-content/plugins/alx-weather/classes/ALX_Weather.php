@@ -45,7 +45,12 @@ class ALX_Weather
         $city = '?q=' . $dataCity;
         $country_cod = $dataCountry;
 
-        $url  = self::getUrl() . $city . ',' . $country_cod . self::$api_key;
+        if(!$country_cod) {
+            $url  = self::getUrl() . $city . self::$api_key;
+        }
+        else {
+            $url  = self::getUrl() . $city . ',' . $country_cod . self::$api_key;
+        }
 
         $content = json_decode(stripslashes(file_get_contents($url)));
 
@@ -68,16 +73,20 @@ class ALX_Weather
                     <div class="weather-forecast-list__items-today">';
 
         $html .= '<div class="weather-forecast-list__item"> <img src="https://openweathermap.org/img/w/' . $weather->icon . '.png" alt="forecast" width="50" height="50">
-                <span class="weather-forecast-list__day">temp: ' . $tempCelsium . ' °C</span>
+                <span class="weather-forecast-list__day"> <span class="temperature-font">' . $tempCelsium . ' °C</span></span>
                 <div class="weather-forecast-list__today-label">' . date('M d H:i') . ' <span class="cityName"> ' . $data->name . '</span></div>
                 <div class="weather-forecast_description"> description: ' . $weather->description . '</div>
                 </div>';
         $html .= '<div class="weather-forecast-list__item">
            
        <p class="weather-forecast-list__card">wind: ' . $data->wind->speed . ' m/s&nbsp;
+       </div>
+       <p><a class="toggle-form" href="#">Wrong location?</a></p>
+       <div class="input-city-form">
+       <input type="text" class="alx-city-name" name="city" placeholder="Enter your city"><input class="set-city" type="button" value="Submit">
        </div>';
         $html .= '</div></div>';
-        //$html = $data;
+
         return $html;
     }
 

@@ -1,0 +1,9 @@
+@import url('https://fonts.googleapis.com/css?family=Anton');
+
+.temperature-font {
+    font-family: 'Anton', sans-serif;
+    font-size: 38px;
+}
+.input-city-form {
+    display: none;
+}

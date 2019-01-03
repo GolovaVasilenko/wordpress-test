@@ -27,6 +27,29 @@ jQuery(document).ready(function($) {
         ajax_request();
     }
 
+    $('body').on('click', 'a.toggle-form' , function(e) {
+        e.preventDefault();
+        $('.input-city-form').fadeToggle('slow');
+    });
+
+    $('body').on('click', '.set-city', function(e) {
+        var cityName = $('input.alx-city-name').val();
+
+        if(cityName === '') {
+            return false;
+        }
+
+        $.ajax({
+            type: 'post',
+            url: '/wp-admin/admin-ajax.php',
+            dataType: 'html',
+            data: {action: 'get_weather_for_form', 'city': cityName},
+            success: function(data) {
+                $('.output-weather').html(data);
+            }
+        });
+    });
+
 });
 
 
